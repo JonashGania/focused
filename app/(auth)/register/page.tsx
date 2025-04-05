@@ -1,8 +1,11 @@
-import React from "react";
 import RegisterForm from "@/components/register/Form";
 
 const Register = () => {
-  return <RegisterForm />;
+  return (
+    <div className="flex flex-col w-full">
+      <RegisterForm />
+    </div>
+  );
 };
 
 export default Register;
