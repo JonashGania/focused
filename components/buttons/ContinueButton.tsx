@@ -1,9 +1,18 @@
-import React from "react";
+import { ButtonHTMLAttributes } from "react";
+import { twMerge } from "tailwind-merge";
 
-const ContinueButton = () => {
+const ContinueButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
+  const { className, children, ...otherProps } = props;
+
   return (
-    <button className="bg-zinc-800 hover:bg-zinc-700 py-4 px-6 text-xl font-semibold rounded-2xl text-gray-200 cursor-pointer ">
-      Continue
+    <button
+      className={twMerge(
+        "bg-orange-700 hover:bg-orange-800 py-4 px-6 text-xl font-semibold rounded-2xl text-gray-200 cursor-pointer",
+        className
+      )}
+      {...otherProps}
+    >
+      {children}
     </button>
   );
 };
