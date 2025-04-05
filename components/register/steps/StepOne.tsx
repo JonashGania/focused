@@ -1,18 +1,26 @@
 import React from "react";
-import ContinueButton from "@/components/buttons/ContinueButton";
+import { UseFormRegister } from "react-hook-form";
+import { RegisterSchema } from "@/lib/schema";
+import { z } from "zod";
 
-const StepOne = () => {
+type StepOneProps = {
+  children: React.ReactNode;
+  register: UseFormRegister<z.infer<typeof RegisterSchema>>;
+};
+
+const StepOne = ({ children, register }: StepOneProps) => {
   return (
     <div className="flex flex-col items-center justify-center gap-8">
-      <h2 className="pt-4 font-bold text-3xl text-zinc-700">
+      <h2 className="pt-4 font-bold text-3xl text-zinc-800">
         Let&apos;s start with your name
       </h2>
       <input
         type="text"
         placeholder="First name"
-        className="text-2xl text-center border border-gray-400/30 rounded-md focus:outline-none px-1 py-2"
+        {...register("firstName")}
+        className="text-2xl text-center border-b-2 border-zinc-800/50 focus:border-zinc-800 focus:outline-none transition-all duration-500 px-2 py-2"
       />
-      <ContinueButton />
+      {children}
     </div>
   );
 };
