@@ -17,6 +17,7 @@ const StepOne = ({ children, register }: StepOneProps) => {
       <input
         type="text"
         placeholder="First name"
+        autoComplete="off"
         {...register("firstName")}
         className="text-2xl text-center border-b-2 border-zinc-800/50 focus:border-zinc-800 focus:outline-none transition-all duration-500 px-2 py-2"
       />
