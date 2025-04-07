@@ -2,17 +2,20 @@
 
 import { ChevronLeft } from "lucide-react";
 import { Progress } from "../../ui/progress";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { RegisterSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "motion/react";
+import { signup } from "@/actions/auth";
+import { toast } from "sonner";
 import StepOne from "../steps/StepOne";
 import StepTwo from "../steps/StepTwo";
 import StepThree from "../steps/StepThree";
 import ContinueButton from "../../buttons/ContinueButton";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 const steps = [
   { id: "Step 1", name: "First Name" },
@@ -65,6 +68,21 @@ const RegisterForm = () => {
     }
   };
 
+  const formSubmit = async (data: z.infer<typeof RegisterSchema>) => {
+    await signup(data);
+  };
+
+  const searchParams = useSearchParams();
+  const errorMessage = searchParams.get("message");
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage, {
+        position: "top-center",
+      });
+    }
+  }, [errorMessage]);
+
   return (
     <>
       <div className="max-w-[500px] h-[550px] w-full mx-auto p-4 shadow-md rounded-lg flex flex-col backdrop-blur-xl bg-white/50">
@@ -82,7 +100,10 @@ const RegisterForm = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin  scrollbar-thumb-zinc-500 scrollbar-track-zinc-400/30">
-          <form className=" flex flex-col  h-full">
+          <form
+            onSubmit={handleSubmit(formSubmit)}
+            className=" flex flex-col  h-full"
+          >
             {currentStep === 0 && (
               <motion.div
                 initial={{ x: delta >= 0 ? "50%" : "-50%", opacity: 0 }}
@@ -129,7 +150,7 @@ const RegisterForm = () => {
                 className="h-full"
               >
                 <StepThree>
-                  <ContinueButton className="justify-self-end">
+                  <ContinueButton type="submit" className="justify-self-end">
                     Finish Setup
                   </ContinueButton>
                 </StepThree>
