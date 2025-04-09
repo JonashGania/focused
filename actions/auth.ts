@@ -2,22 +2,23 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { SignUpPayload } from "@/types/auth";
+import { SignUpPayload, LoginPayload } from "@/types/auth";
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function login(formData: FormData) {
+export async function login({ email, password }: LoginPayload) {
   const supabase = await createClient();
 
   const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+    email: email,
+    password: password,
   };
 
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect("/login?message=Could not authenticate user");
+    redirect(`/login?message=${error.message}`);
+    // redirect("/login?message=Could not authenticate user");
   }
 
   revalidatePath("/", "layout");
