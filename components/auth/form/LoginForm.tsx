@@ -20,7 +20,7 @@ const LoginForm = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -59,7 +59,7 @@ const LoginForm = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                placeholder="Password"
+                placeholder="••••••••"
                 className="text-lg w-full focus:outline-none"
               />
               {showPassword ? (
@@ -88,7 +88,11 @@ const LoginForm = () => {
             {errorMessage}
           </span>
         )}
-        <ContinueButton type="submit" className="mt-8">
+        <ContinueButton
+          type="submit"
+          disabled={isSubmitting}
+          className="mt-8 disabled:bg-orange-800 disabled:cursor-default"
+        >
           LOG IN
         </ContinueButton>
       </form>
