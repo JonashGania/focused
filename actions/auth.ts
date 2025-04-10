@@ -18,7 +18,6 @@ export async function login({ email, password }: LoginPayload) {
 
   if (error) {
     redirect(`/login?message=${error.message}`);
-    // redirect("/login?message=Could not authenticate user");
   }
 
   revalidatePath("/", "layout");
@@ -45,5 +44,11 @@ export async function signup({ email, password, firstName }: SignUpPayload) {
   }
 
   revalidatePath("/", "layout");
+  redirect(`/verify?message=${email}`);
+}
+
+export async function signout() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
   redirect("/login");
 }
