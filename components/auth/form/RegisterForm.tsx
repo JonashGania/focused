@@ -32,7 +32,7 @@ const RegisterForm = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -79,6 +79,11 @@ const RegisterForm = () => {
     if (errorMessage) {
       toast.error(errorMessage, {
         position: "top-center",
+        style: {
+          background: "#ffffff",
+          borderColor: "#ffffff",
+          color: "#fb2c36",
+        },
       });
     }
   }, [errorMessage]);
@@ -150,7 +155,11 @@ const RegisterForm = () => {
                 className="h-full"
               >
                 <StepThree>
-                  <ContinueButton type="submit" className="justify-self-end">
+                  <ContinueButton
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="justify-self-end disabled:bg-orange-800 disabled:cursor-default"
+                  >
                     Finish Setup
                   </ContinueButton>
                 </StepThree>
