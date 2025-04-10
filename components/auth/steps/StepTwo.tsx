@@ -37,7 +37,7 @@ const StepTwo = ({ children, register, errors }: StepTwoProps) => {
           <div className="flex items-center gap-2 border-b-2 border-zinc-800/50 focus-within:border-zinc-900 pr-2 py-2 focus:outline-none transition-all duration-300">
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="create password"
+              placeholder="••••••••"
               {...register("password")}
               className="text-lg w-full focus:outline-none"
             />
