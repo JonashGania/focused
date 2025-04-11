@@ -10,12 +10,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "motion/react";
 import { signup } from "@/actions/auth";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 import StepOne from "../steps/StepOne";
 import StepTwo from "../steps/StepTwo";
 import StepThree from "../steps/StepThree";
 import ContinueButton from "../../buttons/ContinueButton";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 const steps = [
   { id: "Step 1", name: "First Name" },
@@ -90,7 +90,7 @@ const RegisterForm = () => {
 
   return (
     <>
-      <div className="max-w-[500px] h-[550px] w-full mx-auto p-4 shadow-md rounded-lg flex flex-col backdrop-blur-xl bg-white/50">
+      <div className="max-w-[500px] h-[550px] w-full mx-auto p-4 shadow-md rounded-lg flex flex-col">
         <div>
           <button
             className={`${
@@ -104,7 +104,7 @@ const RegisterForm = () => {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin  scrollbar-thumb-zinc-500 scrollbar-track-zinc-400/30">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-400 scrollbar-track-zinc-300/30">
           <form
             onSubmit={handleSubmit(formSubmit)}
             className=" flex flex-col  h-full"
@@ -121,7 +121,7 @@ const RegisterForm = () => {
                     onClick={next}
                     disabled={!firstName}
                     onKeyDown={(e) => e.key === "Enter" && next()}
-                    className={`disabled:bg-orange-800 disabled:cursor-default`}
+                    className={`disabled:bg-indigo-900 disabled:cursor-default`}
                   >
                     Continue
                   </ContinueButton>
@@ -140,7 +140,7 @@ const RegisterForm = () => {
                     type="button"
                     onClick={next}
                     disabled={!email || !password}
-                    className={`disabled:bg-orange-800 disabled:cursor-default`}
+                    className={`disabled:bg-indigo-900 disabled:cursor-default`}
                   >
                     Continue
                   </ContinueButton>
@@ -158,7 +158,7 @@ const RegisterForm = () => {
                   <ContinueButton
                     type="submit"
                     disabled={isSubmitting}
-                    className="justify-self-end disabled:bg-orange-800 disabled:cursor-default"
+                    className="justify-self-end disabled:bg-indigo-900 disabled:cursor-default"
                   >
                     Finish Setup
                   </ContinueButton>
@@ -169,11 +169,8 @@ const RegisterForm = () => {
         </div>
 
         <div className="text-center">
-          <Link
-            href="/login"
-            className="text-zinc-950 hover:underline font-medium "
-          >
-            Already have an account
+          <Link href="/login" className="text-zinc-950 underline ">
+            Already have an account?
           </Link>
         </div>
       </div>
@@ -181,9 +178,9 @@ const RegisterForm = () => {
         <Progress
           value={progressValue}
           max={100}
-          className="[&>*]:bg-gray-200 bg-gray-900/50"
+          className="[&>*]:bg-neutral-900 bg-gray-500/20"
         />
-        <span className="text-white font-medium ">
+        <span className="text-neutral-900 font-medium ">
           Step {currentStep + 1} of 3
         </span>
       </div>

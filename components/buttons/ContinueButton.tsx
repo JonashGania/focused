@@ -7,7 +7,7 @@ const ContinueButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       className={twMerge(
-        "bg-orange-700 hover:bg-orange-800 py-4 px-6 text-xl font-semibold rounded-2xl text-gray-200 cursor-pointer",
+        "bg-indigo-500 hover:bg-indigo-600 py-4 px-6 text-xl font-semibold rounded-2xl text-gray-200 cursor-pointer",
         className
       )}
       {...otherProps}

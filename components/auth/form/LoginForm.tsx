@@ -34,20 +34,23 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="max-w-[500px] w-full mx-auto p-4 shadow-md rounded-lg flex flex-col backdrop-blur-xl bg-white/50">
+    <div className="max-w-[450px] w-full mx-auto px-8 pt-8 pb-4 shadow-md rounded-lg flex flex-col backdrop-blur-xl bg-white/50">
       <h2 className="text-4xl font-bold text-center py-4">Welcome back!</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="py-8 flex flex-col items-center"
-      >
-        <div className="flex flex-col gap-4 max-w-[300px] w-full">
+      <form onSubmit={handleSubmit(onSubmit)} className="pt-8 flex flex-col">
+        <div className="flex flex-col gap-4 w-full">
           <div>
-            <input
-              type="email"
-              {...register("email")}
-              placeholder="name@example.com"
-              className="text-lg w-full border-b-2 border-zinc-800/50 focus:border-zinc-900 focus:outline-none transition-all duration-500 pr-2 py-2"
-            />
+            <div className="flex flex-col">
+              <label htmlFor="email" className="pb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                {...register("email")}
+                placeholder="name@example.com"
+                className="rounded-sm px-2 py-2 border border-gray-300 focus:outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-300/30 transition-all duration-300"
+              />
+            </div>
+
             {errors.email && (
               <span className="text-red-500 text-sm">
                 {errors.email.message}
@@ -55,26 +58,32 @@ const LoginForm = () => {
             )}
           </div>
           <div>
-            <div className="flex items-center gap-2 border-b-2 border-zinc-800/50 focus-within:border-zinc-900 pr-2 py-2 focus:outline-none transition-all duration-300">
-              <input
-                type={showPassword ? "text" : "password"}
-                {...register("password")}
-                placeholder="••••••••"
-                className="text-lg w-full focus:outline-none"
-              />
-              {showPassword ? (
-                <Eye
-                  size={22}
-                  className="text-zinc-500 cursor-pointer"
-                  onClick={() => setShowPassword((prev) => !prev)}
+            <div className="flex flex-col">
+              <label htmlFor="password" className="text-zinc-700 pb-1">
+                Password
+              </label>
+              <div className="flex items-center gap-2 rounded-sm px-2 py-2 pr-2 border border-gray-300 focus-within:border-indigo-300 focus-within:ring-2 focus-within:ring-indigo-300/30 transition-all duration-300">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="••••••••"
+                  {...register("password")}
+                  className="w-full focus:outline-none"
                 />
-              ) : (
-                <EyeOff
-                  size={22}
-                  className="text-zinc-500 cursor-pointer"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                />
-              )}
+                {showPassword ? (
+                  <Eye
+                    size={22}
+                    className="text-zinc-400 cursor-pointer"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  />
+                ) : (
+                  <EyeOff
+                    size={22}
+                    className="text-zinc-400 cursor-pointer"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  />
+                )}
+              </div>
             </div>
             {errors.password && (
               <span className="text-red-500 text-sm">
@@ -88,22 +97,19 @@ const LoginForm = () => {
             {errorMessage}
           </span>
         )}
-        <ContinueButton
-          type="submit"
-          disabled={isSubmitting}
-          className="mt-8 disabled:bg-orange-800 disabled:cursor-default"
-        >
-          LOG IN
-        </ContinueButton>
+        <div className="flex items-center mt-8 gap-4 justify-end">
+          <Link href="/register" className=" text-zinc-950 underline ">
+            Create an account
+          </Link>
+          <ContinueButton
+            type="submit"
+            disabled={isSubmitting}
+            className=" disabled:bg-indigo-900 disabled:cursor-default text-sm py-2.5 rounded-md"
+          >
+            LOG IN
+          </ContinueButton>
+        </div>
       </form>
-      <div className="text-center">
-        <Link
-          href="/register"
-          className=" text-zinc-950 hover:underline font-medium "
-        >
-          Create an account
-        </Link>
-      </div>
     </div>
   );
 };

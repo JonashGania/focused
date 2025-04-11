@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
@@ -21,39 +20,51 @@ const StepTwo = ({ children, register, errors }: StepTwoProps) => {
       <h2 className="pt-4 font-bold text-3xl text-zinc-800 text-center">
         Create the perfect environment to get in the zone 🚀
       </h2>
-      <div className="flex flex-col gap-2 max-w-[300px] w-full">
+      <div className="flex flex-col gap-4 max-w-[350px] w-full">
         <div>
-          <input
-            type="email"
-            placeholder="name@example.com"
-            {...register("email")}
-            className="text-lg w-full border-b-2 border-zinc-800/50 focus:border-zinc-900 focus:outline-none transition-all duration-500 pr-2 py-2"
-          />
+          <div className="flex flex-col">
+            <label htmlFor="email" className="text-zinc-700 pb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="name@example.com"
+              {...register("email")}
+              className="rounded-sm px-2 py-2 border border-gray-300 focus:outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-300/30 transition-all duration-300"
+            />
+          </div>
           {errors.email && (
             <span className="text-red-500 text-sm">{errors.email.message}</span>
           )}
         </div>
         <div>
-          <div className="flex items-center gap-2 border-b-2 border-zinc-800/50 focus-within:border-zinc-900 pr-2 py-2 focus:outline-none transition-all duration-300">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="••••••••"
-              {...register("password")}
-              className="text-lg w-full focus:outline-none"
-            />
-            {showPassword ? (
-              <Eye
-                size={22}
-                className="text-zinc-500 cursor-pointer"
-                onClick={() => setShowPassword((prev) => !prev)}
+          <div className="flex flex-col">
+            <label htmlFor="password" className="text-zinc-700 pb-1">
+              Password
+            </label>
+            <div className="flex items-center gap-2 rounded-sm px-2 py-2 pr-2 border border-gray-300 focus-within:border-indigo-300 focus-within:ring-2 focus-within:ring-indigo-300/30 transition-all duration-300">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="••••••••"
+                {...register("password")}
+                className="w-full focus:outline-none"
               />
-            ) : (
-              <EyeOff
-                size={22}
-                className="text-zinc-500 cursor-pointer"
-                onClick={() => setShowPassword((prev) => !prev)}
-              />
-            )}
+              {showPassword ? (
+                <Eye
+                  size={22}
+                  className="text-zinc-400 cursor-pointer"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                />
+              ) : (
+                <EyeOff
+                  size={22}
+                  className="text-zinc-400 cursor-pointer"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                />
+              )}
+            </div>
           </div>
           {errors.password && (
             <span className="text-red-500 text-sm">
