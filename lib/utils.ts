@@ -5,6 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const slugify = (str: string) => {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+};
+
 export const themes = [
   { name: "Snowy Winter Cabin", image: "/themes/snowy-winter-cabin.jpg" },
   { name: "Countryside Afternoon", image: "/themes/countryside-afternoon.jpg" },
