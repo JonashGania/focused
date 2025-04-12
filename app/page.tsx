@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { signout } from "@/actions/auth";
-import BackgroundWrapper from "@/components/BackgroundWrapper";
+import BackgroundWrapper from "@/components/home/BackgroundWrapper";
+import Hero from "@/components/home/Hero";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -15,15 +15,7 @@ export default async function Home() {
     <>
       <BackgroundWrapper />
       <div className="w-full h-screen">
-        <div></div>
-        <div>
-          <h1 className="text-white">This is main page</h1>
-          <form action={signout}>
-            <button className="bg-white text-black cursor-pointer px-5 py-2">
-              Sign Out
-            </button>
-          </form>
-        </div>
+        <Hero />
       </div>
     </>
   );
