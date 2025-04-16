@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import BackgroundWrapper from "@/components/home/BackgroundWrapper";
-import Hero from "@/components/home/Hero";
+import BackgroundWrapper from "@/components/main/BackgroundWrapper";
+import Hero from "@/components/main/Hero";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <>
       <BackgroundWrapper />
-      <div className="w-full h-screen">
+      <div className="w-full h-screen font-[family-name:var(--font-roboto)]">
         <Hero />
       </div>
     </>
