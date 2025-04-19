@@ -15,7 +15,7 @@ export default async function Home() {
     <>
       <BackgroundWrapper />
       <div className="w-full h-screen font-[family-name:var(--font-roboto)]">
-        <Hero />
+        <Hero user={data.user} />
       </div>
     </>
   );
