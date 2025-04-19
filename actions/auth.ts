@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { SignUpPayload, LoginPayload } from "@/types/auth";
+import { SignUpPayload, LoginPayload } from "@/types";
 
 import { createClient } from "@/utils/supabase/server";
 
