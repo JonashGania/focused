@@ -44,7 +44,7 @@ const Dialog = ({ isOpen, onClose, children }: DialogProps) => {
         onClick={onClose}
       ></div>
       <div
-        className={`fixed top-1/2 left-1/2 w-full z-50 py-6 px-8 max-w-[calc(100%-2rem)] sm:max-w-lg  rounded-lg bg-black transform -translate-x-1/2 -translate-y-1/2 min-h-[100px] transition-all duration-500 ease-out ${
+        className={`fixed top-1/2 left-1/2 w-full z-50 py-6 px-8 max-w-[calc(100%-2rem)] sm:max-w-lg  rounded-lg bg-black transform -translate-x-1/2 -translate-y-1/2 min-h-[100px] max-h-[480px] transition-all duration-500 ease-out ${
           isAnimating
             ? "opacity-100 translate-y-[-50%]"
             : "opacity-0 translate-y-[-60%]"
