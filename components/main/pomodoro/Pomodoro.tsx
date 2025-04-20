@@ -9,15 +9,13 @@ const Pomodoro = () => {
   const {
     mode,
     timeLeft,
-    totalTime,
     isActive,
     sessions,
     toggleTimer,
     resetTimer,
     switchMode,
+    progress,
   } = useTimer();
-
-  const progress = ((totalTime - timeLeft) / totalTime) * 100;
 
   return (
     <div className="flex flex-col justify-center items-center max-w-[400px] w-full mx-auto">
