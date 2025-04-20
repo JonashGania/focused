@@ -9,8 +9,6 @@ export type LoginPayload = {
   password: string;
 };
 
-export type Action = "delete" | "updateTask";
-
 export type Tasks = {
   id: number;
   inserted_at: string;
@@ -18,3 +16,8 @@ export type Tasks = {
   task: string;
   user_id: string;
 };
+
+export type TaskAction =
+  | { action: "delete"; task: Tasks }
+  | { action: "updateTask"; task: Tasks }
+  | { action: "reorderTasks"; tasks: Tasks[] };

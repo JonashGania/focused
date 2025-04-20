@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Action, Tasks } from "@/types";
+import { Tasks, TaskAction } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,19 +31,18 @@ export const themes = [
   { name: "Wisdom Forest", image: "/themes/wisdom-forest.jpg" },
 ];
 
-export const taskReducer = (
-  state: Tasks[] | null,
-  { action, task }: { action: Action; task: Tasks }
-) => {
+export const taskReducer = (state: Tasks[] | null, action: TaskAction) => {
   if (!state) return [];
 
-  switch (action) {
+  switch (action.action) {
     case "delete":
-      return state.filter(({ id }) => id !== task.id);
+      return state.filter((task) => task.id !== action.task.id);
     case "updateTask":
-      return state.map(({ id }) =>
-        id === task.id ? { ...task, is_complete: task.is_complete } : task
+      return state.map((task) =>
+        task.id === action.task.id ? action.task : task
       );
+    case "reorderTasks":
+      return action.tasks || state;
     default:
       return state;
   }

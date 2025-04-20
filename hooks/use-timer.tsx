@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 
 type TimerMode = "focus" | "break";
 
@@ -14,64 +14,177 @@ export const useTimer = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [sessions, setSessions] = useState(0);
 
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const expectedEndTimeRef = useRef<number | null>(null);
+
   const getDuration = useCallback((timerMode: TimerMode) => {
     return timerMode === "focus" ? focusTime * 60 : breakTime * 60;
   }, []);
 
-  const toggleTimer = () => {
-    setIsActive((prev) => !prev);
-  };
+  const toggleTimer = useCallback(() => {
+    setIsActive((prev) => {
+      if (!prev) {
+        expectedEndTimeRef.current = Date.now() + timeLeft * 1000;
+      }
+      return !prev;
+    });
+  }, [timeLeft]);
 
-  const resetTimer = () => {
+  const resetTimer = useCallback(() => {
     setIsActive(false);
-    setTimeLeft(getDuration(mode));
-  };
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    const duration = getDuration(mode);
+    setTimeLeft(duration);
+    setTotalTime(duration);
+    expectedEndTimeRef.current = null;
+  }, [mode, getDuration]);
 
   const switchMode = useCallback(() => {
     const newMode = mode === "focus" ? "break" : "focus";
     setMode(newMode);
-    setTimeLeft(getDuration(newMode));
-    setTotalTime(getDuration(newMode));
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    const duration = getDuration(mode);
+    setTimeLeft(duration);
+    setTotalTime(duration);
     setIsActive(false);
+    expectedEndTimeRef.current = null;
   }, [mode, getDuration]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-
     if (isActive) {
-      interval = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval!);
+      if (expectedEndTimeRef.current === null) {
+        expectedEndTimeRef.current = Date.now() + timeLeft * 1000;
+      }
 
-            try {
-              const audio = new Audio("/sounds/shine.mp3");
-              audio.play().catch((e) => console.error("Error playing", e));
-            } catch (error) {
-              console.error("Error playing sound", error);
+      intervalRef.current = setInterval(() => {
+        const now = Date.now();
+        const remaining = Math.max(
+          0,
+          Math.round((expectedEndTimeRef.current! - now) / 1000)
+        );
+
+        setTimeLeft(remaining);
+
+        if (remaining === 0) {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
+          try {
+            const audio = new Audio("/sounds/shine.mp3");
+            audio.play().catch((e) => console.error("Error playing", e));
+          } catch (error) {
+            console.error("Error playing sound", error);
+          }
+
+          if (mode === "focus") {
+            if (mode === "focus") {
+              setSessions((prev) => prev + 1);
             }
           }
-          return prev - 1;
-        });
-      }, 1000);
-    } else if (interval) {
-      clearInterval(interval);
+
+          switchMode();
+        }
+      }, 100);
+    } else if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
 
     return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isActive]);
-
-  useEffect(() => {
-    if (timeLeft === 0) {
-      switchMode();
-
-      if (mode === "focus") {
-        setSessions((prev) => prev + 1);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
-    }
-  }, [timeLeft, switchMode, mode]);
+    };
+  }, [isActive, mode, timeLeft, switchMode]);
+
+  const progress =
+    Math.max(0, Math.min(100, ((totalTime - timeLeft) / totalTime) * 100)) || 0;
+
+  // const toggleTimer = () => {
+  //   setIsActive((prev) => !prev);
+  // };
+
+  // const resetTimer = () => {
+  //   setIsActive(false);
+  //   setTimeLeft(getDuration(mode));
+  // };
+
+  // const switchMode = useCallback(() => {
+  //   const newMode = mode === "focus" ? "break" : "focus";
+  //   setMode(newMode);
+  //   setTimeLeft(getDuration(newMode));
+  //   setTotalTime(getDuration(newMode));
+  //   setIsActive(false);
+  // }, [mode, getDuration]);
+
+  // useEffect(() => {
+  //   let interval: NodeJS.Timeout | null = null;
+  //   const startTime = Date.now();
+  //   const expectedEndTime = startTime + timeLeft * 1000;
+
+  //   if (isActive) {
+  //     interval = setInterval(() => {
+  //       const now = Date.now();
+  //       const remaining = Math.max(
+  //         0,
+  //         Math.round((expectedEndTime - now) / 1000)
+  //       );
+
+  //       setTimeLeft(remaining);
+
+  //       // setTimeLeft((prev) => {
+  //       //   if (prev <= 1) {
+  //       //     clearInterval(interval!);
+
+  //       //     try {
+  //       //       const audio = new Audio("/sounds/shine.mp3");
+  //       //       audio.play().catch((e) => console.error("Error playing", e));
+  //       //     } catch (error) {
+  //       //       console.error("Error playing sound", error);
+  //       //     }
+  //       //   }
+  //       //   return prev - 1;
+  //       // });
+
+  //       if (remaining === 0) {
+  //         clearInterval(interval!);
+  //         try {
+  //           const audio = new Audio("/sounds/shine.mp3");
+  //           audio.play().catch((e) => console.error("Error playing", e));
+  //         } catch (error) {
+  //           console.error("Error playing sound", error);
+  //         }
+  //       }
+  //     }, 1000);
+  //   } else if (interval) {
+  //     clearInterval(interval);
+  //   }
+
+  //   return () => {
+  //     if (interval) clearInterval(interval);
+  //   };
+  // }, [isActive, timeLeft]);
+
+  // useEffect(() => {
+  //   if (timeLeft === 0) {
+  //     switchMode();
+
+  //     if (mode === "focus") {
+  //       setSessions((prev) => prev + 1);
+  //     }
+  //   }
+  // }, [timeLeft, switchMode, mode]);
 
   return {
     mode,
@@ -82,5 +195,6 @@ export const useTimer = () => {
     switchMode,
     isActive,
     sessions,
+    progress,
   };
 };
