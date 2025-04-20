@@ -2,12 +2,13 @@
 
 import Dialog from "../../dialogs/Dialog";
 import TaskForm from "./TaskForm";
-import { Checkbox } from "@/components/ui/checkbox";
+import TaskList from "./TaskList";
 import { useState, useOptimistic, startTransition } from "react";
-import { Trash } from "lucide-react";
-import { updateTaskCompletion, deleteTask } from "@/actions/tasks";
 import { Tasks } from "@/types";
 import { taskReducer } from "@/lib/utils";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,26 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
     tasks,
     taskReducer
   );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id && optimisticTasks) {
+      const oldIndex = optimisticTasks.findIndex(
+        (task) => task.id === active.id
+      );
+      const newIndex = optimisticTasks.findIndex((task) => task.id === over.id);
+
+      const reorderedTask = arrayMove(optimisticTasks, oldIndex, newIndex);
+
+      startTransition(() => {
+        updateOptimisticTasks({
+          action: "reorderTasks",
+          tasks: reorderedTask,
+        });
+      });
+    }
+  };
 
   return (
     <>
@@ -34,47 +55,21 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
           What do you want to work on for the day?
         </h4>
 
-        <div className="flex-1 max-h-[200px] mt-8 flex flex-col gap-3 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-black pr-2">
-          {optimisticTasks?.map((task) => (
-            <div
-              key={task.id}
-              className="w-full flex py-4 px-4 bg-gray-200 cursor-pointer rounded-lg"
-            >
-              <div className="flex items-center flex-1 gap-2">
-                <Checkbox
-                  checked={task.is_complete}
-                  onCheckedChange={async (value) => {
-                    if (value === "indeterminate") return;
-                    startTransition(() => {
-                      updateOptimisticTasks({
-                        id: task.id,
-                        is_complete: Boolean(value),
-                      });
-                    });
-                    await updateTaskCompletion(task.id, value);
-                  }}
-                  className="rounded-full border-2 size-5 data-[state=checked]:bg-red-500 data-[state=checked]:border-red-500 border-neutral-600"
+        <div className="flex-1 max-h-[230px] mt-8 flex flex-col gap-3 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-black pr-2">
+          <DndContext
+            modifiers={[restrictToVerticalAxis]}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={optimisticTasks ?? []}>
+              {optimisticTasks?.map((task) => (
+                <TaskList
+                  key={task.id}
+                  task={task}
+                  updateOptimisticTasks={updateOptimisticTasks}
                 />
-                <span
-                  className={` font-medium ${
-                    task.is_complete
-                      ? "line-through text-neutral-900/60"
-                      : "text-neutral-900"
-                  }`}
-                >
-                  {task.task}
-                </span>
-              </div>
-              <button
-                onClick={async () => {
-                  await deleteTask(task.id);
-                }}
-                className="cursor-pointer"
-              >
-                <Trash size={20} className="text-red-500" />
-              </button>
-            </div>
-          ))}
+              ))}
+            </SortableContext>
+          </DndContext>
         </div>
 
         <TaskForm />
