@@ -41,8 +41,6 @@ export const taskReducer = (state: Tasks[] | null, action: TaskAction) => {
       return state.map((task) =>
         task.id === action.task.id ? action.task : task
       );
-    case "reorderTasks":
-      return action.tasks || state;
     default:
       return state;
   }
