@@ -40,8 +40,8 @@ const TaskForm = () => {
           >
             Add
           </Button>
-          <Button className="bg-transparent border border-red-500 text-red-500 cursor-pointer w-[75px]">
-            Clear
+          <Button className="bg-transparent border border-red-500 text-red-500 cursor-pointer ">
+            Clear Tasks
           </Button>
         </div>
       </form>
