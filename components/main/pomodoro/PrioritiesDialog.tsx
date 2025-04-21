@@ -3,12 +3,13 @@
 import Dialog from "../../dialogs/Dialog";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
-import { useState, useOptimistic, startTransition } from "react";
+import { useState, useOptimistic } from "react";
 import { Tasks } from "@/types";
 import { taskReducer } from "@/lib/utils";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { useTaskOrder } from "@/hooks/use-task-order";
 
 const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,24 +18,22 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
     taskReducer
   );
 
+  const { orderedTasks, setOrderedIdsCallback } = useTaskOrder(optimisticTasks);
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (over && active.id !== over.id && optimisticTasks) {
-      const oldIndex = optimisticTasks.findIndex(
-        (task) => task.id === active.id
-      );
-      const newIndex = optimisticTasks.findIndex((task) => task.id === over.id);
+    if (!over || active.id === over.id) return;
 
-      const reorderedTask = arrayMove(optimisticTasks, oldIndex, newIndex);
+    const oldIndex = orderedTasks.findIndex((task) => task.id === active.id);
+    const newIndex = orderedTasks.findIndex((task) => task.id === over.id);
 
-      startTransition(() => {
-        updateOptimisticTasks({
-          action: "reorderTasks",
-          tasks: reorderedTask,
-        });
-      });
-    }
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const reorderedTasks = arrayMove(orderedTasks, oldIndex, newIndex);
+    const ids = reorderedTasks.map((task) => task.id);
+
+    setOrderedIdsCallback(ids);
   };
 
   return (
@@ -44,7 +43,10 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
         onClick={() => setIsOpen(true)}
       >
         <p className="flex-1 text-white text-center font-bold text-3xl cursor-pointer">
-          Add your priorities here ✏️
+          {orderedTasks.length > 0
+            ? orderedTasks[0].task
+            : "Add your priorities here"}{" "}
+          ✏️
         </p>
       </div>
       <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
@@ -60,8 +62,8 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
             modifiers={[restrictToVerticalAxis]}
             onDragEnd={handleDragEnd}
           >
-            <SortableContext items={optimisticTasks ?? []}>
-              {optimisticTasks?.map((task) => (
+            <SortableContext items={orderedTasks}>
+              {orderedTasks.map((task) => (
                 <TaskList
                   key={task.id}
                   task={task}
