@@ -19,4 +19,5 @@ export type Tasks = {
 
 export type TaskAction =
   | { action: "delete"; task: Tasks }
-  | { action: "updateTask"; task: Tasks };
+  | { action: "updateTask"; task: Tasks }
+  | { action: "clearTasks" };
