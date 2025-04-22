@@ -76,31 +76,25 @@ export const updateTaskCompletion = async (
   revalidatePath("/");
 };
 
-// export const updateTaskPositions = async (
-//   taskUpdates: { id: number; position: number }[]
-// ) => {
-//   const supabase = await createClient();
+export const deleteAllTasks = async () => {
+  const supabase = await createClient();
 
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-//   if (!user) {
-//     throw new Error("User is not logged in");
-//   }
+  if (!user) {
+    throw new Error("User is not logged in");
+  }
 
-//   const promises = taskUpdates.map(({ id, position }) => {
-//     return supabase
-//       .from("todos")
-//       .update({ position })
-//       .eq("id", id)
-//       .eq("user_id", user.id);
-//   });
+  const { error } = await supabase
+    .from("todos")
+    .delete()
+    .eq("user_id", user.id);
 
-//   try {
-//     await Promise.all(promises);
-//   } catch (error) {
-//     console.error("Error reordering tasks", error);
-//     throw new Error("Failed to reorder task positions");
-//   }
-// };
+  if (error) {
+    throw new Error("Error deleting all tasks");
+  }
+
+  revalidatePath("/");
+};
