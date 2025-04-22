@@ -1,11 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { addTask } from "@/actions/tasks";
+import { addTask, deleteAllTasks } from "@/actions/tasks";
 import { useFormStatus } from "react-dom";
 import { useState } from "react";
+import { TaskAction } from "@/types";
+import { startTransition } from "react";
 
-const TaskForm = () => {
+interface TaskFormProps {
+  updateOptimisticTasks: (action: TaskAction) => void;
+}
+
+const TaskForm = ({ updateOptimisticTasks }: TaskFormProps) => {
   const [taskInput, setTaskInput] = useState("");
   const { pending } = useFormStatus();
 
@@ -40,7 +46,18 @@ const TaskForm = () => {
           >
             Add
           </Button>
-          <Button className="bg-transparent border border-red-500 text-red-500 cursor-pointer ">
+          <Button
+            type="button"
+            onClick={async () => {
+              startTransition(() => {
+                updateOptimisticTasks({
+                  action: "clearTasks",
+                });
+              });
+              await deleteAllTasks();
+            }}
+            className="bg-transparent border border-red-500 text-red-500 cursor-pointer "
+          >
             Clear Tasks
           </Button>
         </div>
