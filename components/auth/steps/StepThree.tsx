@@ -4,17 +4,24 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { themes, slugify } from "@/lib/utils";
 
-const StepThree = ({ children }: { children: React.ReactNode }) => {
-  const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
+interface StepThreeProps {
+  children: React.ReactNode;
+  selectedTheme: string | null;
+  setSelectedTheme: (theme: string | null) => void;
+}
 
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) setSelectedTheme(storedTheme);
-  }, []);
+const StepThree = ({
+  children,
+  selectedTheme,
+  setSelectedTheme,
+}: StepThreeProps) => {
+  // useEffect(() => {
+  //   const storedTheme = localStorage.getItem("theme");
+  //   if (storedTheme) setSelectedTheme(storedTheme);
+  // }, [setSelectedTheme]);
 
   const handleSelectTheme = (theme: string) => {
     const themeName = slugify(theme);
-    localStorage.setItem("theme", themeName);
     setSelectedTheme(themeName);
   };
 
