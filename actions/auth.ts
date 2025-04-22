@@ -44,7 +44,8 @@ export async function signup({ email, password, firstName }: SignUpPayload) {
   }
 
   revalidatePath("/", "layout");
-  redirect(`/verify?message=${email}`);
+
+  return { success: true, email: email };
 }
 
 export async function signout() {
