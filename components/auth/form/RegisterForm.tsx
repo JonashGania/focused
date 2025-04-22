@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "motion/react";
 import { signup } from "@/actions/auth";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import StepOne from "../steps/StepOne";
 import StepTwo from "../steps/StepTwo";
 import StepThree from "../steps/StepThree";
@@ -26,7 +26,10 @@ const steps = [
 const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [previousStep, setPreviousStep] = useState(0);
+  const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
   const delta = currentStep - previousStep;
+
+  const router = useRouter();
 
   const {
     register,
@@ -69,7 +72,13 @@ const RegisterForm = () => {
   };
 
   const formSubmit = async (data: z.infer<typeof RegisterSchema>) => {
-    await signup(data);
+    const res = await signup(data);
+    if (res.success) {
+      if (selectedTheme) {
+        localStorage.setItem("theme", selectedTheme);
+      }
+      router.push(`/verify?message=${res.email}`);
+    }
   };
 
   const searchParams = useSearchParams();
@@ -154,7 +163,10 @@ const RegisterForm = () => {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="h-full"
               >
-                <StepThree>
+                <StepThree
+                  selectedTheme={selectedTheme}
+                  setSelectedTheme={setSelectedTheme}
+                >
                   <ContinueButton
                     type="submit"
                     disabled={isSubmitting}
