@@ -39,10 +39,10 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
   return (
     <>
       <div
-        className="flex mt-6 max-w-[500px] mx-auto"
+        className="flex justify-center mt-6 max-w-[500px] mx-auto"
         onClick={() => setIsOpen(true)}
       >
-        <p className="flex-1 text-white text-center font-bold text-3xl cursor-pointer">
+        <p className="text-white text-center font-bold text-3xl cursor-pointer">
           {orderedTasks.length > 0
             ? orderedTasks[0].task
             : "Add your priorities here"}{" "}
@@ -74,7 +74,7 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
           </DndContext>
         </div>
 
-        <TaskForm />
+        <TaskForm updateOptimisticTasks={updateOptimisticTasks} />
       </Dialog>
     </>
   );
