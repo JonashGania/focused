@@ -9,10 +9,11 @@ const Hero = async ({ user }: { user: User }) => {
   const { data: tasks } = await supabase
     .from("todos")
     .select()
-    .eq("user_id", user.id);
+    .eq("user_id", user.id)
+    .order("inserted_at", { ascending: true });
 
   return (
-    <div className="w-full px-8">
+    <div className="flex-1 w-full px-8 select-none">
       <Pomodoro />
       <PrioritiesDialog tasks={tasks} />
     </div>
