@@ -80,7 +80,7 @@ export const useTimer = () => {
             intervalRef.current = null;
           }
           try {
-            const audio = new Audio("/sounds/shine.mp3");
+            const audio = new Audio("/alert/shine.mp3");
             audio.play().catch((e) => console.error("Error playing", e));
           } catch (error) {
             console.error("Error playing sound", error);

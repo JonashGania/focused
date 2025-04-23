@@ -13,6 +13,13 @@ export const slugify = (str: string) => {
     .replace(/[^\w-]+/g, "");
 };
 
+export const formatDuration = (time: number) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  const formattedSeconds = seconds.toString().padStart(2, "0");
+  return `${minutes}:${formattedSeconds}`;
+};
+
 export const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
