@@ -52,9 +52,8 @@ export const useTimer = () => {
       intervalRef.current = null;
     }
 
-    const duration = getDuration(mode);
-    setTimeLeft(duration);
-    setTotalTime(duration);
+    setTimeLeft(getDuration(newMode));
+    setTotalTime(getDuration(newMode));
     setIsActive(false);
     expectedEndTimeRef.current = null;
   }, [mode, getDuration]);

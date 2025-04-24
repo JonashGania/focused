@@ -1,7 +1,8 @@
 "use client";
 
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode } from "react";
 import { XIcon } from "lucide-react";
+import { useAnimate } from "@/hooks/use-animate";
 
 type DialogProps = {
   isOpen: boolean;
@@ -10,28 +11,7 @@ type DialogProps = {
 };
 
 const Dialog = ({ isOpen, onClose, children }: DialogProps) => {
-  const [shouldRender, setShouldRender] = useState(isOpen);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-
-      const animationTimer = setTimeout(() => {
-        setIsAnimating(true);
-      }, 10);
-
-      return () => clearTimeout(animationTimer);
-    } else {
-      setIsAnimating(false);
-
-      const unmountTimer = setTimeout(() => {
-        setShouldRender(false);
-      }, 500);
-
-      return () => clearTimeout(unmountTimer);
-    }
-  }, [isOpen]);
+  const { shouldRender, isAnimating } = useAnimate(isOpen);
 
   if (!shouldRender) return null;
 
@@ -39,7 +19,7 @@ const Dialog = ({ isOpen, onClose, children }: DialogProps) => {
     <>
       <div
         className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-500 ease-out ${
-          isAnimating ? "opacity-100" : "opacity-0"
+          isAnimating ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
       ></div>
