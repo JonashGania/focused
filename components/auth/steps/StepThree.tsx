@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { themes, slugify } from "@/lib/utils";
 
@@ -15,11 +14,6 @@ const StepThree = ({
   selectedTheme,
   setSelectedTheme,
 }: StepThreeProps) => {
-  // useEffect(() => {
-  //   const storedTheme = localStorage.getItem("theme");
-  //   if (storedTheme) setSelectedTheme(storedTheme);
-  // }, [setSelectedTheme]);
-
   const handleSelectTheme = (theme: string) => {
     const themeName = slugify(theme);
     setSelectedTheme(themeName);
