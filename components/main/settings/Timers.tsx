@@ -1,9 +1,43 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { usePomodoroStore } from "@/store/pomodoro-store";
 
 const Timers = () => {
+  const focusTimer = usePomodoroStore((state) => state.focusTimer);
+  const breakTimer = usePomodoroStore((state) => state.breakTimer);
+  const updateFocusTimer = usePomodoroStore((state) => state.setFocusTimer);
+  const updateBreakTimer = usePomodoroStore((state) => state.setBreakTimer);
+
+  const [focusInput, setFocusInput] = useState(focusTimer.toString());
+  const [breakInput, setBreakInput] = useState(breakTimer.toString());
+
+  useEffect(() => {
+    setFocusInput(focusTimer.toString());
+    setBreakInput(breakTimer.toString());
+  }, [focusTimer, breakTimer]);
+
+  const handleFocusBlur = () => {
+    const parsedValue = parseInt(focusInput);
+    const validValue =
+      !isNaN(parsedValue) && parsedValue >= 0 ? parsedValue : 1;
+
+    updateFocusTimer(validValue);
+    setFocusInput(validValue.toString());
+  };
+
+  const handleBreakBlur = () => {
+    const parsedValue = parseInt(breakInput);
+    const validValue =
+      !isNaN(parsedValue) && parsedValue >= 0 ? parsedValue : 1;
+
+    updateBreakTimer(validValue);
+    setBreakInput(validValue.toString());
+  };
+
   return (
     <div>
-      <h1 className="text-3xl text-white font-bold">Focus Timer</h1>
+      <h1 className="text-3xl text-white font-bold">Pomodoro Settings</h1>
       <h2 className="text-xl text-white font-bold mt-5">Timer Lengths</h2>
       <span className="text-neutral-400 font-base">
         Adjust your timer for maximum productivity.
@@ -19,7 +53,10 @@ const Timers = () => {
               id="focus-time"
               min={1}
               max={1440}
-              className="flex-1 text-white outline-none timer-input"
+              value={focusInput}
+              onChange={(e) => setFocusInput(e.target.value)}
+              onBlur={handleFocusBlur}
+              className="flex-1 text-white outline-none timer-input max-w-[50px] w-full"
             />
             <span className="text-neutral-400 text-sm font-semibold mr-1">
               mins
@@ -36,7 +73,10 @@ const Timers = () => {
               id="break-time"
               min={1}
               max={1440}
-              className="flex-1 text-white outline-none timer-input"
+              value={breakInput}
+              onChange={(e) => setBreakInput(e.target.value)}
+              onBlur={handleBreakBlur}
+              className="flex-1 text-white outline-none timer-input  max-w-[50px] w-full"
             />
             <span className="text-neutral-400 text-sm font-semibold mr-1">
               mins
