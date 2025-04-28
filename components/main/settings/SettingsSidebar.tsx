@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
 import { useAnimate } from "@/hooks/use-animate";
 import { X } from "lucide-react";
 import Timers from "./Timers";
+import AlertSounds from "./AlertSounds";
+import AmbientThemes from "./AmbientThemes";
 
 interface DialogProps {
   isOpen: boolean;
@@ -34,7 +35,11 @@ const SettingsSidebar = ({ isOpen, onClose }: DialogProps) => {
           >
             <X size={25} className="text-white/60 hover:text-white" />
           </button>
-          <Timers />
+          <div className="pt-6 overflow-y-auto">
+            <Timers />
+            <AlertSounds />
+            <AmbientThemes />
+          </div>
         </div>
       </aside>
     </>
