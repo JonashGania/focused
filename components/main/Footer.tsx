@@ -12,7 +12,7 @@ const Footer = () => {
   const musicButtonRef = useRef<HTMLButtonElement | null>(null);
 
   return (
-    <footer className="px-12 pb-8">
+    <footer className="px-4 min-[450px]:px-12 pb-8">
       <div className="flex gap-3 justify-start items-end">
         <button
           onClick={() => setOpenSettings((prev) => !prev)}
