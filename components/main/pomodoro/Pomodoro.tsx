@@ -3,6 +3,7 @@
 import { SemiCircularProgress } from "../../progress-bars/SemiCircularProgress";
 import { Button } from "../../ui/button";
 import { useTimer } from "@/hooks/use-timer";
+import { useResponsiveSize } from "@/hooks/use-responsive-size";
 import { formatTime } from "@/lib/utils";
 
 const Pomodoro = () => {
@@ -17,19 +18,21 @@ const Pomodoro = () => {
     progress,
   } = useTimer();
 
+  const size = useResponsiveSize(450, 350, 400);
+
   return (
     <div className="flex flex-col justify-center items-center max-w-[400px] w-full mx-auto">
-      <div className="flex justify-between items-center w-full mb-8">
-        <span className="text-white text-2xl font-medium">
+      <div className="flex justify-between items-center w-full mb-16 min-[450px]:mb-8">
+        <span className="text-white text-xl min-[450px]:text-2xl font-medium">
           {mode === "focus" ? "🎯 Focus" : "☕ Break"} Time
         </span>
-        <span className="text-xl text-gray-200 font-medium">
+        <span className="text-lg min-[450px]:text-xl text-gray-200 font-medium">
           Sessions: {sessions}
         </span>
       </div>
       <SemiCircularProgress
         progress={progress}
-        size={400}
+        size={size}
         strokeWidth={20}
         circleColor="oklch(81% 0.117 11.638)"
         indicatorColor="oklch(64.5% 0.246 16.439)"
@@ -58,7 +61,7 @@ const Pomodoro = () => {
       <div className="mt-4">
         <Button
           onClick={switchMode}
-          className="w-[400px] bg-neutral-900/70 hover:bg-neutral-900 h-10 text-white cursor-pointer"
+          className="w-[350px] min-[450px]:w-[400px] bg-neutral-900/70 hover:bg-neutral-900 h-10 text-white cursor-pointer"
         >
           Switch to {mode === "focus" ? "Break" : "Focus"}
         </Button>
