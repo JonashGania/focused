@@ -1,12 +1,20 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 type ThemeState = {
   backgroundTheme: string;
   setTheme: (theme: string) => void;
 };
 
-export const useThemeStore = create<ThemeState>((set) => ({
-  backgroundTheme: "/themes/snowy-winter-cabin.jpg",
-  setTheme: (theme: string) => set({ backgroundTheme: theme }),
-}));
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    (set) => ({
+      backgroundTheme: "snowy-winter-cabin",
+      setTheme: (theme: string) => set({ backgroundTheme: theme }),
+    }),
+    {
+      name: "focusd-theme",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
