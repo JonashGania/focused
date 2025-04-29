@@ -42,7 +42,7 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
         className="flex justify-center mt-6 max-w-[500px] mx-auto"
         onClick={() => setIsOpen(true)}
       >
-        <p className="text-white text-center font-bold text-3xl cursor-pointer">
+        <p className="text-white text-center font-bold text-2xl min-[450px]:text-3xl cursor-pointer">
           {orderedTasks.length > 0
             ? orderedTasks[0].task
             : "Add your priorities here"}{" "}

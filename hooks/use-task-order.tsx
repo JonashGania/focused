@@ -6,11 +6,11 @@ export const useTaskOrder = (optimisticTasks: Tasks[] | null) => {
 
   const setOrderedIdsCallback = useCallback((ids: number[]) => {
     setOrderedIds(ids);
-    localStorage.setItem("tasksOrder", JSON.stringify(ids));
+    localStorage.setItem("focusd-task-order", JSON.stringify(ids));
   }, []);
 
   useEffect(() => {
-    const stored = localStorage.getItem("tasksOrder");
+    const stored = localStorage.getItem("focusd-task-order");
     if (stored) {
       setOrderedIds(JSON.parse(stored));
     }

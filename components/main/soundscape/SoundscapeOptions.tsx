@@ -34,7 +34,7 @@ const SoundscapeOptions = ({
   selectedSound,
 }: SoundscapeOptionsProps) => {
   return (
-    <div className="flex flex-wrap">
+    <div className="grid grid-cols-3 min-[430px]:grid-cols-4">
       {sounds.map((sound) => {
         const isSelected = selectedSound === sound.audioSrc;
 

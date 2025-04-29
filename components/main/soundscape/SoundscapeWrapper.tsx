@@ -129,7 +129,7 @@ const SoundscapeWrapper = ({
           : "opacity-0 pointer-events-none"
       }`}
     >
-      <div className="absolute left-[-140px] bottom-[70px] min-w-[450px] max-h-[500px] rounded-3xl flex flex-col">
+      <div className="fixed min-[540px]:absolute max-h-[470px] max-[540px]:h-full left-[5vw] min-[540px]:left-[-140px] bottom-[90px] min-[540]:bottom-[70px] max-w-[90vw] min-[540px]:min-w-[450px] min-[540px]:max-h-[500px] w-full rounded-3xl flex flex-col">
         <div className="bg-black py-4 px-6 rounded-t-3xl flex items-center justify-between gap-6">
           <h3 className="text-white font-bold text-xl">Sounds</h3>
           <div className="flex items-center gap-3">

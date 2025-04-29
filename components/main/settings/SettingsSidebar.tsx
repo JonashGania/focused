@@ -24,18 +24,18 @@ const SettingsSidebar = ({ isOpen, onClose }: DialogProps) => {
         onClick={onClose}
       ></div>
       <aside
-        className={`fixed left-0 top-0 bottom-0 h-svh bg-black w-[400px] z-50 transition-transform duration-200 ease-in-out p-6 ${
+        className={`fixed left-0 top-0 bottom-0 h-svh bg-black w-[400px] z-50 transition-transform duration-200 ease-in-out py-6 pr-6 ${
           isAnimating ? "translate-x-[0px]" : "translate-x-[-100%]"
         }`}
       >
-        <div className="relative">
+        <div className="relative h-full">
           <button
             onClick={onClose}
-            className="absolute top-0 right-0 cursor-pointer"
+            className="absolute -top-8 -right-1 cursor-pointer"
           >
             <X size={25} className="text-white/60 hover:text-white" />
           </button>
-          <div className="pt-6 overflow-y-auto">
+          <div className="mt-6 pl-6 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-black h-full pr-2">
             <Timers />
             <AlertSounds />
             <AmbientThemes />

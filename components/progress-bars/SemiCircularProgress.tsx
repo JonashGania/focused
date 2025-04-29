@@ -90,7 +90,10 @@ export function SemiCircularProgress({
           </div>
         )}
         {label && (
-          <div className="text-8xl font-bold " style={{ color: textColor }}>
+          <div
+            className="text-7xl min-[450px]:text-8xl font-bold "
+            style={{ color: textColor }}
+          >
             {label}
           </div>
         )}
