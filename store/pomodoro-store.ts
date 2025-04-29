@@ -25,7 +25,7 @@ export const usePomodoroStore = create<PomodoroState>()(
       setAlertVolume: (volume: number) => set({ alertVolume: volume }),
     }),
     {
-      name: "pomodoro-settings",
+      name: "focusd-pomodoro-settings",
       storage: createJSONStorage(() => localStorage),
     }
   )
