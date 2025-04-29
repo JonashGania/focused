@@ -11,6 +11,7 @@ import { motion } from "motion/react";
 import { signup } from "@/actions/auth";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useThemeStore } from "@/store/theme-store";
 import StepOne from "../steps/StepOne";
 import StepTwo from "../steps/StepTwo";
 import StepThree from "../steps/StepThree";
@@ -24,6 +25,8 @@ const steps = [
 ];
 
 const RegisterForm = () => {
+  const setTheme = useThemeStore((state) => state.setTheme);
+
   const [currentStep, setCurrentStep] = useState(0);
   const [previousStep, setPreviousStep] = useState(0);
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
@@ -75,7 +78,7 @@ const RegisterForm = () => {
     const res = await signup(data);
     if (res.success) {
       if (selectedTheme) {
-        localStorage.setItem("theme", selectedTheme);
+        setTheme(selectedTheme);
       }
       router.push(`/verify?message=${res.email}`);
     }
