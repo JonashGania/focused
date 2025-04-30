@@ -22,7 +22,7 @@ const Pomodoro = () => {
 
   return (
     <div className="flex flex-col justify-center items-center max-w-[400px] w-full mx-auto">
-      <div className="flex justify-between items-center w-full mb-16 min-[450px]:mb-8">
+      <div className="flex justify-between items-center w-full mb-20 min-[450px]:mb-8">
         <span className="text-white text-xl min-[450px]:text-2xl font-medium">
           {mode === "focus" ? "🎯 Focus" : "☕ Break"} Time
         </span>
