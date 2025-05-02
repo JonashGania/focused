@@ -12,8 +12,8 @@ export const useTimer = () => {
   const alertVolume = usePomodoroStore((state) => state.alertVolume);
 
   const [mode, setMode] = useState<TimerMode>("focus");
-  const [timeLeft, setTimeLeft] = useState(focusTimer * 10);
-  const [totalTime, setTotalTime] = useState(focusTimer * 10);
+  const [timeLeft, setTimeLeft] = useState(focusTimer * 60);
+  const [totalTime, setTotalTime] = useState(focusTimer * 60);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [sessions, setSessions] = useState(0);
 
@@ -22,7 +22,7 @@ export const useTimer = () => {
 
   const getDuration = useCallback(
     (timerMode: TimerMode) => {
-      return timerMode === "focus" ? focusTimer * 10 : breakTimer * 10;
+      return timerMode === "focus" ? focusTimer * 60 : breakTimer * 60;
     },
     [focusTimer, breakTimer]
   );
