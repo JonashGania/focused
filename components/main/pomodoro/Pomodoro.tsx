@@ -5,6 +5,7 @@ import { Button } from "../../ui/button";
 import { useTimer } from "@/hooks/use-timer";
 import { useResponsiveSize } from "@/hooks/use-responsive-size";
 import { formatTime } from "@/lib/utils";
+import { motion } from "motion/react";
 
 const Pomodoro = () => {
   const {
@@ -21,7 +22,12 @@ const Pomodoro = () => {
   const size = useResponsiveSize(450, 350, 400);
 
   return (
-    <div className="flex flex-col justify-center items-center max-w-[400px] w-full mx-auto">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.3, ease: "easeInOut" }}
+      className="flex flex-col justify-center items-center max-w-[400px] w-full mx-auto"
+    >
       <div className="flex justify-between items-center w-full mb-20 min-[450px]:mb-8">
         <span className="text-white text-xl min-[450px]:text-2xl font-medium">
           {mode === "focus" ? "🎯 Focus" : "☕ Break"} Time
@@ -66,7 +72,7 @@ const Pomodoro = () => {
           Switch to {mode === "focus" ? "Break" : "Focus"}
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
