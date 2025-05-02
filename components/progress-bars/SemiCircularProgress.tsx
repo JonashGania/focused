@@ -43,7 +43,7 @@ export function SemiCircularProgress({
     <div className="flex flex-col items-center relative">
       <svg
         width={svgWidth}
-        height={svgHeight}
+        height={250}
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
       >
         <path
@@ -83,7 +83,7 @@ export function SemiCircularProgress({
         )}
       </svg>
 
-      <div className="text-center absolute bottom-0">
+      <div className="text-center absolute bottom-5">
         {showPercentage && (
           <div className="text-2xl font-bold" style={{ color: textColor }}>
             {Math.round(progressValue)}%
