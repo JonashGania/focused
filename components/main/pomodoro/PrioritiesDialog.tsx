@@ -10,6 +10,7 @@ import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { useTaskOrder } from "@/hooks/use-task-order";
+import { motion } from "motion/react";
 
 const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,12 +43,17 @@ const PrioritiesDialog = ({ tasks }: { tasks: Tasks[] | null }) => {
         className="flex justify-center mt-6 max-w-[500px] mx-auto"
         onClick={() => setIsOpen(true)}
       >
-        <p className="text-white text-center font-bold text-2xl min-[450px]:text-3xl cursor-pointer">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.3, ease: "easeInOut" }}
+          className="text-white text-center font-bold text-2xl min-[450px]:text-3xl cursor-pointer"
+        >
           {orderedTasks.length > 0
             ? orderedTasks[0].task
             : "Add your priorities here"}{" "}
           ✏️
-        </p>
+        </motion.p>
       </div>
       <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <h2 className="text-center text-white text-3xl font-bold mt-4">
