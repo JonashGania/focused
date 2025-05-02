@@ -12,8 +12,8 @@ export const useTimer = () => {
   const alertVolume = usePomodoroStore((state) => state.alertVolume);
 
   const [mode, setMode] = useState<TimerMode>("focus");
-  const [timeLeft, setTimeLeft] = useState(focusTimer * 60);
-  const [totalTime, setTotalTime] = useState(focusTimer * 60);
+  const [timeLeft, setTimeLeft] = useState(focusTimer * 10);
+  const [totalTime, setTotalTime] = useState(focusTimer * 10);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [sessions, setSessions] = useState(0);
 
@@ -22,7 +22,7 @@ export const useTimer = () => {
 
   const getDuration = useCallback(
     (timerMode: TimerMode) => {
-      return timerMode === "focus" ? focusTimer * 60 : breakTimer * 60;
+      return timerMode === "focus" ? focusTimer * 10 : breakTimer * 10;
     },
     [focusTimer, breakTimer]
   );
@@ -30,14 +30,18 @@ export const useTimer = () => {
   const toggleTimer = useCallback(() => {
     setIsActive((prev) => {
       if (!prev) {
-        const duration = getDuration(mode);
-        setTimeLeft(duration);
-        setTotalTime(duration);
-        expectedEndTimeRef.current = Date.now() + duration * 1000;
+        if (timeLeft === 0 || expectedEndTimeRef.current == null) {
+          const duration = getDuration(mode);
+          setTimeLeft(duration);
+          setTotalTime(duration);
+          expectedEndTimeRef.current = Date.now() + duration * 1000;
+        } else {
+          expectedEndTimeRef.current = Date.now() + timeLeft * 1000;
+        }
       }
       return !prev;
     });
-  }, [mode, getDuration]);
+  }, [mode, getDuration, timeLeft]);
 
   const resetTimer = useCallback(() => {
     setIsActive(false);
@@ -67,12 +71,10 @@ export const useTimer = () => {
   }, [mode, getDuration]);
 
   useEffect(() => {
-    if (!isActive) {
-      const duration = getDuration(mode);
-      setTimeLeft(duration);
-      setTotalTime(duration);
-    }
-  }, [focusTimer, breakTimer, mode, isActive, getDuration]);
+    const duration = getDuration(mode);
+    setTimeLeft(duration);
+    setTotalTime(duration);
+  }, [focusTimer, breakTimer, mode, getDuration]);
 
   useEffect(() => {
     if (isActive) {
