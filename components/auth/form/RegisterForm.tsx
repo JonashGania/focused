@@ -105,6 +105,7 @@ const RegisterForm = () => {
       <div className="max-w-[500px] h-[550px] w-full mx-auto p-4 shadow-md rounded-lg flex flex-col">
         <div>
           <button
+            disabled={isSubmitting}
             className={`${
               currentStep === 0 ? "hidden" : "flex"
             } items-center cursor-pointer `}
