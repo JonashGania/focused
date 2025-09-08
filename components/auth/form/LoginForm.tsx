@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { login } from "@/actions/auth";
 import { LoginSchema } from "@/lib/schema";
 import { useForm } from "react-hook-form";
@@ -10,9 +10,11 @@ import { useSearchParams } from "next/navigation";
 import z from "zod";
 import ContinueButton from "@/components/buttons/ContinueButton";
 import Link from "next/link";
+import { motion } from "motion/react";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
   const errorMessage = searchParams.get("message");
@@ -34,85 +36,203 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="max-w-[450px] w-full mx-auto px-8 pt-8 pb-4 shadow-md rounded-lg flex flex-col backdrop-blur-xl bg-white/50">
-      <h2 className="text-4xl font-bold text-center py-4">Welcome back!</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="pt-8 flex flex-col">
-        <div className="flex flex-col gap-4 w-full">
-          <div>
-            <div className="flex flex-col">
-              <label htmlFor="email" className="pb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                {...register("email")}
-                placeholder="name@example.com"
-                disabled={isSubmitting}
-                className="rounded-sm px-2 py-2 border border-gray-300 focus:outline-none focus:border-indigo-300 focus:ring-2 focus:ring-indigo-300/30 transition-all duration-300"
-              />
-            </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="max-w-[480px] w-full mx-auto"
+    >
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/90 via-white/80 to-white/70 backdrop-blur-xl shadow-2xl border border-white/20">
+        {/* Decorative gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-transparent to-purple-50/30 pointer-events-none" />
 
-            {errors.email && (
-              <span className="text-red-500 text-sm">
-                {errors.email.message}
-              </span>
-            )}
+        {/* Animated background elements */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-200/30 to-transparent rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-200/30 to-transparent rounded-full blur-2xl" />
+
+        <div className="relative z-10 p-8 md:p-10">
+          <div className="text-center mb-8">
+            <motion.h1
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 bg-clip-text text-transparent mb-3"
+            >
+              Welcome back
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-gray-600 text-lg"
+            >
+              Sign in to continue your journey
+            </motion.p>
           </div>
-          <div>
-            <div className="flex flex-col">
-              <label htmlFor="password" className="text-zinc-700 pb-1">
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Email Field */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Email Address
+              </label>
+              <div className="relative group">
+                <input
+                  type="email"
+                  id="email"
+                  {...register("email")}
+                  placeholder="name@example.com"
+                  disabled={isSubmitting}
+                  onFocus={() => setFocusedInput("email")}
+                  onBlur={() => setFocusedInput(null)}
+                  className={`w-full pl-4 pr-4 py-4 bg-white/60 backdrop-blur-sm border-2 rounded-xl transition-all duration-300 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.email
+                      ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                      : focusedInput === "email"
+                      ? "border-indigo-400 focus:border-indigo-500 focus:ring-indigo-100"
+                      : "border-gray-200 hover:border-gray-300 focus:border-indigo-400 focus:ring-indigo-100"
+                  } focus:outline-none focus:ring-4`}
+                />
+              </div>
+              {errors.email && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-2 text-sm text-red-600 flex items-center gap-1"
+                >
+                  <span className="w-1 h-1 bg-red-500 rounded-full" />
+                  {errors.email.message}
+                </motion.p>
+              )}
+            </motion.div>
+
+            {/* Password Field */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Password
               </label>
-              <div className="flex items-center gap-2 rounded-sm px-2 py-2 pr-2 border border-gray-300 focus-within:border-indigo-300 focus-within:ring-2 focus-within:ring-indigo-300/30 transition-all duration-300">
+              <div className="relative group">
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  placeholder="••••••••"
                   {...register("password")}
+                  placeholder="••••••••"
                   disabled={isSubmitting}
-                  className="w-full focus:outline-none"
+                  onFocus={() => setFocusedInput("password")}
+                  onBlur={() => setFocusedInput(null)}
+                  className={`w-full pl-4 pr-12 py-4 bg-white/60 backdrop-blur-sm border-2 rounded-xl transition-all duration-300 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.password
+                      ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                      : focusedInput === "password"
+                      ? "border-indigo-400 focus:border-indigo-500 focus:ring-indigo-100"
+                      : "border-gray-200 hover:border-gray-300 focus:border-indigo-400 focus:ring-indigo-100"
+                  } focus:outline-none focus:ring-4`}
                 />
-                {showPassword ? (
-                  <Eye
-                    size={22}
-                    className="text-zinc-400 cursor-pointer"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                  />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+              {errors.password && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-2 text-sm text-red-600 flex items-center gap-1"
+                >
+                  <span className="w-1 h-1 bg-red-500 rounded-full" />
+                  {errors.password.message}
+                </motion.p>
+              )}
+            </motion.div>
+
+            {/* Error Message */}
+            {errorMessage && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="p-4 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-xl"
+              >
+                <p className="text-sm text-red-700 text-center font-medium">
+                  {errorMessage}
+                </p>
+              </motion.div>
+            )}
+
+            {/* Submit Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="pt-4"
+            >
+              <ContinueButton
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full h-14 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none  flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Signing in...
+                  </div>
                 ) : (
-                  <EyeOff
-                    size={22}
-                    className="text-zinc-400 cursor-pointer"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                  />
+                  <>
+                    Sign In
+                    <ArrowRight size={18} />
+                  </>
                 )}
+              </ContinueButton>
+            </motion.div>
+
+            {/* Divider */}
+            <div className="relative py-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white/80 text-gray-500 font-medium">
+                  New to our platform?
+                </span>
               </div>
             </div>
-            {errors.password && (
-              <span className="text-red-500 text-sm">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
+
+            {/* Register Link */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+              className="text-center"
+            >
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 text-indigo-600 font-semibold rounded-xl border-2 border-indigo-200 hover:border-indigo-300 hover:bg-indigo-50/50 transition-all duration-300 transform hover:scale-[1.02]"
+              >
+                Create an account
+                <ArrowRight size={16} />
+              </Link>
+            </motion.div>
+          </form>
         </div>
-        {errorMessage && (
-          <span className="text-red-500 text-sm text-center pt-4">
-            {errorMessage}
-          </span>
-        )}
-        <div className="flex items-center mt-8 gap-4 justify-end">
-          <Link href="/register" className=" text-zinc-950 underline ">
-            Create an account
-          </Link>
-          <ContinueButton
-            type="submit"
-            disabled={isSubmitting}
-            className=" disabled:bg-indigo-900 disabled:cursor-default text-sm py-2.5 rounded-md"
-          >
-            LOG IN
-          </ContinueButton>
-        </div>
-      </form>
-    </div>
+      </div>
+    </motion.div>
   );
 };
 
