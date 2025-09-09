@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, CheckCircle } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { RegisterSchema } from "@/lib/schema";
@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "motion/react";
 import { signup } from "@/actions/auth";
 import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useThemeStore } from "@/store/theme-store";
 import StepOne from "../steps/StepOne";
 import StepTwo from "../steps/StepTwo";
@@ -82,20 +82,9 @@ const RegisterForm = () => {
 
   const formSubmit = async (data: z.infer<typeof RegisterSchema>) => {
     const res = await signup(data);
-    if (res.success) {
-      if (selectedTheme) {
-        setTheme(selectedTheme);
-      }
-      router.push(`/verify?message=${res.email}`);
-    }
-  };
 
-  const searchParams = useSearchParams();
-  const errorMessage = searchParams.get("message");
-
-  useEffect(() => {
-    if (errorMessage) {
-      toast.error(errorMessage, {
+    if (!res.success) {
+      toast.error(res.message, {
         position: "top-center",
         style: {
           background: "#ffffff",
@@ -103,8 +92,13 @@ const RegisterForm = () => {
           color: "#fb2c36",
         },
       });
+    } else {
+      if (selectedTheme) {
+        setTheme(selectedTheme);
+      }
+      router.push(`/verify?message=${res.email}`);
     }
-  }, [errorMessage]);
+  };
 
   return (
     <div className="w-full max-w-[550px] mx-auto py-8">
