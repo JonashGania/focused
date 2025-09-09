@@ -13,7 +13,7 @@ const Hero = async ({ user }: { user: User }) => {
     .order("inserted_at", { ascending: true });
 
   return (
-    <div className="flex-1 w-full px-4 min-[450px]:px-8 select-none">
+    <div className="flex-1 w-full px-4 min-[450px]:px-8 select-none pb-12">
       <Pomodoro />
       <PrioritiesDialog tasks={tasks} />
     </div>
