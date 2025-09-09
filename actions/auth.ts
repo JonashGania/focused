@@ -40,7 +40,7 @@ export async function signup({ email, password, firstName }: SignUpPayload) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    redirect(`/register?message=${error.message}`);
+    return { success: false, message: error.message };
   }
 
   revalidatePath("/", "layout");
