@@ -198,7 +198,6 @@ const RegisterForm = () => {
                         type="button"
                         onClick={next}
                         disabled={!firstName}
-                        onKeyDown={(e) => e.key === "Enter" && next()}
                         className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02]"
                       >
                         Continue
