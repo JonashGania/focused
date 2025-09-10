@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { usePomodoroStore } from "@/store/pomodoro-store";
+import { Clock, Pause } from "lucide-react";
 
 const Timers = () => {
   const focusTimer = usePomodoroStore((state) => state.focusTimer);
@@ -37,17 +38,21 @@ const Timers = () => {
 
   return (
     <div>
-      <h1 className="text-3xl text-white font-bold">Pomodoro Settings</h1>
-      <h2 className="text-xl text-white font-bold mt-5">Timer Lengths</h2>
-      <span className="text-neutral-400 font-base">
-        Adjust your timer for maximum productivity.
-      </span>
+      <div className="flex items-center gap-4">
+        <div className="p-2 bg-purple-500/20 rounded-md">
+          <Clock size={20} className="text-purple-400" />
+        </div>
+        <h2 className="text-xl font-semibold text-white">Timer Lengths</h2>
+      </div>
       <div className="flex mt-4 gap-6">
-        <div className="flex flex-col space-y-1">
-          <label htmlFor="focus-time" className="text-white text-lg">
-            Focus
+        <div className="flex flex-col space-y-2">
+          <label htmlFor="focus-time" className="flex items-center gap-2">
+            <Clock size={18} className="text-gray-200" />
+            <span className="text-sm text-gray-200 font-medium">
+              Focus Time
+            </span>
           </label>
-          <div className="w-[115px] border-2 border-neutral-500 focus-within:border-white rounded-sm flex items-center justify-between gap-1 pl-2 pr-1 py-1.5">
+          <div className="w-[115px] bg-white/10 border border-white/20 rounded-lg focus-within:border-purple-500   flex items-center justify-between gap-1 px-3 py-3">
             <input
               type="number"
               id="focus-time"
@@ -63,11 +68,14 @@ const Timers = () => {
             </span>
           </div>
         </div>
-        <div className="flex flex-col space-y-1">
-          <label htmlFor="break-time" className="text-white text-lg">
-            Break
+        <div className="flex flex-col space-y-2">
+          <label htmlFor="break-time" className="flex items-center gap-2">
+            <Pause size={18} className="text-gray-200" />
+            <span className="text-sm text-gray-200 font-medium">
+              Break Time
+            </span>
           </label>
-          <div className="w-[115px] border-2 border-neutral-500 focus-within:border-white  rounded-sm flex items-center justify-between gap-1 pl-2 pr-1 py-1.5">
+          <div className="w-[115px] bg-white/10 border border-white/20 rounded-lg focus-within:border-purple-500   flex items-center justify-between gap-1 px-3 py-3">
             <input
               type="number"
               id="break-time"
