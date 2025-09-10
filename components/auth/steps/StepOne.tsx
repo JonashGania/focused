@@ -115,7 +115,6 @@ const StepOne = ({ children, register }: StepOneProps) => {
       </motion.div>
 
       {/* Decorative elements */}
-      <div className="absolute top-10 left-10 w-2 h-2 bg-indigo-300 rounded-full opacity-60 animate-pulse" />
       <div
         className="absolute bottom-20 right-16 w-1.5 h-1.5 bg-purple-300 rounded-full opacity-40 animate-pulse"
         style={{ animationDelay: "1s" }}

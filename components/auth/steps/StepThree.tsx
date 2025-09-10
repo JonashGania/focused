@@ -43,7 +43,7 @@ const StepThree = ({
           </h2>
         </div>
         <p className="text-lg text-gray-600 max-w-md mx-auto leading-relaxed">
-          Select a theme that matches your style and helps you stay focused 🌈
+          Select a theme that matches your style and helps you stay focused
         </p>
       </motion.div>
 
@@ -131,10 +131,10 @@ const StepThree = ({
                     transition={{ duration: 0.2 }}
                   >
                     <h4
-                      className={`font-semibold transition-colors duration-200 ${
+                      className={`font-semibold transition-colors duration-200 text-sm ${
                         isSelected
-                          ? "text-indigo-600 text-base"
-                          : "text-gray-700 group-hover:text-gray-900 text-sm"
+                          ? "text-indigo-600"
+                          : "text-gray-700 group-hover:text-gray-900"
                       }`}
                     >
                       {theme.name}
@@ -192,7 +192,7 @@ const StepThree = ({
       </motion.div>
 
       {/* Decorative elements */}
-      <div className="absolute top-20 left-8 w-2 h-2 bg-indigo-300 rounded-full opacity-60 animate-pulse" />
+
       <div
         className="absolute bottom-40 right-6 w-1.5 h-1.5 bg-purple-300 rounded-full opacity-40 animate-pulse"
         style={{ animationDelay: "2s" }}

@@ -263,7 +263,6 @@ const StepTwo = ({ children, register, errors }: StepTwoProps) => {
       </motion.div>
 
       {/* Decorative elements */}
-      <div className="absolute top-16 right-12 w-2 h-2 bg-indigo-300 rounded-full opacity-60 animate-pulse" />
       <div
         className="absolute bottom-32 left-8 w-1.5 h-1.5 bg-purple-300 rounded-full opacity-40 animate-pulse"
         style={{ animationDelay: "1.5s" }}
