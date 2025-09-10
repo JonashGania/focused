@@ -18,28 +18,31 @@ const SettingsSidebar = ({ isOpen, onClose }: DialogProps) => {
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-200 ease-out ${
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-200 ease-out ${
           isAnimating ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
       ></div>
       <aside
-        className={`fixed left-0 top-0 bottom-0 h-svh bg-black w-[400px] z-50 transition-transform duration-200 ease-in-out py-6 pr-6 ${
+        className={`fixed left-0 top-0 bottom-0 h-svh  bg-gradient-to-b from-gray-900 via-gray-900 to-black w-[400px] z-50 transition-transform duration-200 ease-in-out py-6 pr-6 ${
           isAnimating ? "translate-x-[0px]" : "translate-x-[-100%]"
         }`}
       >
-        <div className="relative h-full">
+        <div className="relative pl-6 pr-2 pb-4 border-b border-white/10">
           <button
             onClick={onClose}
-            className="absolute -top-8 -right-1 cursor-pointer"
+            className="absolute right-0 top-0 p-2 rounded-lg bg-white/10 hover:bg-white/20 
+                     text-white/60 hover:text-white transition-all duration-200 cursor-pointer"
           >
-            <X size={25} className="text-white/60 hover:text-white" />
+            <X size={20} />
           </button>
-          <div className="mt-6 pl-6 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-black h-full pr-2">
-            <Timers />
-            <AlertSounds />
-            <AmbientThemes />
-          </div>
+          <h1 className="text-2xl font-bold text-white">Pomodoro Settings</h1>
+          <p className="text-white/60 mt-1">Customize your focus experience</p>
+        </div>
+        <div className="mt-6 pl-6 pr-2 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent pb-32">
+          <Timers />
+          <AlertSounds />
+          <AmbientThemes />
         </div>
       </aside>
     </>
